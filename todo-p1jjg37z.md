@@ -90,3 +90,4 @@
 - [x] Add an explicit Express import to the root Vercel entrypoint so Vercel recognizes the serverless function.
 - [x] Fix the Vercel runtime `ERR_MODULE_NOT_FOUND` by using an explicit `.js` extension in the root ESM import.
 - [x] Bundle the Vercel Express app before deployment so Vercel’s native ESM loader does not fail on extensionless internal server imports.
+- [x] Resolve Vercel build-step TS7016 for the generated `dist/vercel.js` entrypoint without changing runtime behavior.
