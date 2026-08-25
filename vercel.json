@@ -3,7 +3,6 @@
   "framework": "express",
   "buildCommand": "pnpm build",
   "installCommand": "pnpm install --frozen-lockfile",
-  "outputDirectory": "public",
   "rewrites": [
     { "source": "/collections/:path*", "destination": "/index.html" },
     { "source": "/compare", "destination": "/index.html" },
