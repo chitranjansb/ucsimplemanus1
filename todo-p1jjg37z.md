@@ -87,3 +87,4 @@
 - [x] Replace static analytics environment placeholders with optional runtime loading and verify a fresh Vercel build.
 - [ ] Validate the redeployed Vercel root, deep links, and public tRPC endpoint, then checkpoint and report the deployment correction.
 - [ ] Correct the Vercel MCP-reported entrypoint failure by letting the Express preset use the root `index.ts` while retaining `public/**` as CDN static output.
+- [ ] Add an explicit Express import to the root Vercel entrypoint so Vercel recognizes the serverless function.
