@@ -78,3 +78,9 @@
 - [x] Apply minimal compatible fixes and preserve catalogue, RFQ, CRM, admin, and public-site behavior.
 - [x] Run full type checking, tests, production build, security/dependency checks, and targeted regression validation.
 - [x] Review the final diff, save a corrected checkpoint, and push the validated code to the connected GitHub repository.
+
+- [x] Inspect the live Vercel deployment, repository deployment files, scripts, branches, and hosting configuration.
+- [x] Reproduce and isolate the Vercel failure across routing, build, runtime, environment, and server/API compatibility.
+- [x] Determine whether `npx plugins add vercel/vercel-plugin` is a valid and necessary integration for this application.
+- [x] Apply only safe deployment configuration fixes if required, preserving the existing React/Express/tRPC architecture.
+- [x] Run local and deployment-compatible validation, verify public routes and API behavior, save a checkpoint, and provide the Vercel remediation handoff.

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "express",
+  "buildCommand": "pnpm build",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "rewrites": [
+    { "source": "/collections/:path*", "destination": "/index.html" },
+    { "source": "/compare", "destination": "/index.html" },
+    { "source": "/manufacturing", "destination": "/index.html" },
+    { "source": "/custom-furniture", "destination": "/index.html" },
+    { "source": "/export", "destination": "/index.html" },
+    { "source": "/about", "destination": "/index.html" },
+    { "source": "/contact", "destination": "/index.html" },
+    { "source": "/admin/:path*", "destination": "/index.html" },
+    { "source": "/admin", "destination": "/index.html" }
+  ]
+}
