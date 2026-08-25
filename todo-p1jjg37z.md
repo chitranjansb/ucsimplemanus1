@@ -84,3 +84,5 @@
 - [x] Determine whether `npx plugins add vercel/vercel-plugin` is a valid and necessary integration for this application.
 - [x] Apply only safe deployment configuration fixes if required, preserving the existing React/Express/tRPC architecture.
 - [x] Run local and deployment-compatible validation, verify public routes and API behavior, save a checkpoint, and provide the Vercel remediation handoff.
+- [x] Replace static analytics environment placeholders with optional runtime loading and verify a fresh Vercel build.
+- [ ] Validate the redeployed Vercel root, deep links, and public tRPC endpoint, then checkpoint and report the deployment correction.

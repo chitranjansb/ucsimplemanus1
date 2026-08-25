@@ -6,6 +6,7 @@ import { Route, Switch } from "wouter";
 import { lazy, Suspense } from "react";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { OptionalAnalytics } from "./components/OptionalAnalytics";
 
 const Home = lazy(() => import("./pages/Home"));
 const Collections = lazy(() => import("./pages/Collections"));
@@ -43,6 +44,7 @@ export default function App() {
       <ThemeProvider defaultTheme="light">
         <TooltipProvider>
           <Toaster />
+          <OptionalAnalytics />
           <EnquiryProvider><ComparisonProvider><Suspense fallback={<main className="route-loading" aria-live="polite">Loading Umaid Craftorium…</main>}><Router /></Suspense></ComparisonProvider></EnquiryProvider>
         </TooltipProvider>
       </ThemeProvider>
