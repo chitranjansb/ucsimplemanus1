@@ -4,9 +4,8 @@ import { registerOAuthRoutes } from "./oauth";
 import { registerStorageProxy } from "./storageProxy";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
-import { serveStatic } from "./vite";
 
-export function createApp(options: { serveStaticFiles?: boolean } = {}) {
+export function createApp() {
   const app: Express = express();
   app.disable("x-powered-by");
   app.set("trust proxy", 1);
@@ -28,10 +27,6 @@ export function createApp(options: { serveStaticFiles?: boolean } = {}) {
       createContext,
     }),
   );
-
-  if (options.serveStaticFiles) {
-    serveStatic(app);
-  }
 
   return app;
 }

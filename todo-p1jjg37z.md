@@ -91,3 +91,4 @@
 - [x] Fix the Vercel runtime `ERR_MODULE_NOT_FOUND` by using an explicit `.js` extension in the root ESM import.
 - [x] Bundle the Vercel Express app before deployment so Vercel’s native ESM loader does not fail on extensionless internal server imports.
 - [x] Resolve Vercel build-step TS7016 for the generated `dist/vercel.js` entrypoint without changing runtime behavior.
+- [x] Remove the Vite runtime dependency from the shared Vercel app factory so the production function does not load Rollup optional binaries.
