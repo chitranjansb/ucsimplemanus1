@@ -107,4 +107,4 @@
 - [x] Re-validate the RFQ drawer details/review/submission flow with an imported backup product and document the result.
 - [x] Diagnose why managed `/manus-storage/` product images do not render on the Vercel deployment.
 - [x] Implement a production-safe managed-media delivery fix without committing bulky image files into the repository.
-- [ ] Validate live Vercel image responses plus type checks, tests, and production build; checkpoint and push the correction.
+- [x] Validate live Vercel image responses plus type checks, tests, and production build; checkpoint and push the correction.
