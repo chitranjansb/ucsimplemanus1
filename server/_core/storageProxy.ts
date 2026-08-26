@@ -1,5 +1,12 @@
 import type { Express } from "express";
 import { ENV } from "./env";
+const MANUS_ASSET_PROXY_ORIGIN = "https://umaidcraft-idbrw5ms.manus.space";
+
+export function getManagedStorageFallbackUrl(key: string) {
+  const encodedKey = key.split("/").filter(Boolean).map(encodeURIComponent).join("/");
+  return `${MANUS_ASSET_PROXY_ORIGIN}/manus-storage/${encodedKey}`;
+}
+
 
 export function registerStorageProxy(app: Express) {
   app.get("/manus-storage/*", async (req, res) => {
@@ -10,7 +17,8 @@ export function registerStorageProxy(app: Express) {
     }
 
     if (!ENV.forgeApiUrl || !ENV.forgeApiKey) {
-      res.status(500).send("Storage proxy not configured");
+      res.set("Cache-Control", "public, max-age=300");
+      res.redirect(307, getManagedStorageFallbackUrl(key));
       return;
     }
 
