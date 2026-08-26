@@ -1,4 +1,5 @@
 import { useEnquiry } from "@/contexts/EnquiryContext";
+import React from "react";
 import { trackIntent } from "@/lib/analytics";
 import { useComparison } from "@/contexts/ComparisonContext";
 import { ACCEPTED_RAQ_ATTACHMENT_TYPES, encodeRfqAttachments, MAX_RAQ_ATTACHMENTS, MAX_RAQ_ATTACHMENT_BYTES, validateRfqFiles } from "@/lib/rfqAttachments";

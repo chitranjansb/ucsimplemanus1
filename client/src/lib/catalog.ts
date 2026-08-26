@@ -1,6 +1,7 @@
 export type ProductCategory = string;
 
 import type { ImageFocalPoint } from "@/lib/imageFocal";
+import { backupCollections, backupProducts } from "@/lib/catalogBackup";
 
 export type Product = {
   id: string;
@@ -40,99 +41,31 @@ export type Product = {
   variants?: Array<{ variantCode: string; sku: string | null; name: string | null; material: string | null; finish: string | null; dimensions: string | null; weightKg: number | null; moq: number | null; packagingInfo: string | null; cbm: number | null; availability: "available" | "on_request" | "discontinued" }>;
 };
 
-export const collections = [
-  { slug: "stark", name: "Stark" },
-  { slug: "flat", name: "Flat" },
-  { slug: "toris", name: "Toris" },
-  { slug: "rio", name: "Rio" },
-  { slug: "urban", name: "Urban" },
-  { slug: "mosaic", name: "Mosaic" },
-  { slug: "thakat", name: "Thakat" },
-  { slug: "patina", name: "Patina" },
-  { slug: "sturdy", name: "Sturdy" },
-  { slug: "county", name: "County" },
-  { slug: "muster", name: "Muster" },
-  { slug: "empirical", name: "Empirical" },
-  { slug: "bathroom", name: "Bathroom" },
-  { slug: "musk", name: "Musk" },
-  { slug: "bedroom", name: "Bedroom" },
-  { slug: "misty", name: "Misty" },
-  { slug: "pulp", name: "Pulp" },
-  { slug: "reclaimed", name: "Reclaimed" },
-  { slug: "live-edge", name: "Live Edge" },
-  { slug: "et", name: "ET" },
-];
+export const collections = backupCollections;
 
-export const products: Product[] = [
-  {
-    id: "carved-storage-cabinet",
-    name: "Carved Storage Cabinet",
-    collection: "Mosaic",
-    category: "Storage",
-    material: "Wood finish available on request",
-    description: "A cabinet-style reference for a storage enquiry, shown from the Umaid Craftorium collection archive.",
-    dimensions: "Specifications available on request",
-    image: "/manus-storage/product-cabinet_0372320c.jpg",
-    imageAlt: "Carved wooden cabinet from Umaid Craftorium collection imagery",
-    imageFocal: { desktop: { x: 50, y: 48 }, mobile: { x: 50, y: 44 }, fit: "contain" },
-    featured: true,
-  },
-  {
-    id: "accent-side-table",
-    name: "Accent Side Table",
-    collection: "Patina",
-    category: "Living",
-    material: "Wood finish available on request",
-    description: "A compact occasional furniture reference for living and decorative settings.",
-    dimensions: "Specifications available on request",
-    image: "/manus-storage/product-console_2e1070d8.jpg",
-    imageAlt: "Blue wooden accent table from Umaid Craftorium collection imagery",
-    imageFocal: { desktop: { x: 50, y: 48 }, mobile: { x: 51, y: 46 }, fit: "contain" },
-    featured: true,
-  },
-  {
-    id: "patterned-sideboard",
-    name: "Patterned Sideboard",
-    collection: "Stark",
-    category: "Storage",
-    material: "Wood finish available on request",
-    description: "A sideboard-style storage reference for hospitality, retail, and residential settings.",
-    dimensions: "Specifications available on request",
-    image: "/manus-storage/product-sideboard_6cf7e491.jpg",
-    imageAlt: "Patterned wooden sideboard from Umaid Craftorium collection imagery",
-    imageFocal: { desktop: { x: 50, y: 50 }, mobile: { x: 50, y: 45 }, fit: "contain" },
-    featured: true,
-  },
-  {
-    id: "wooden-chest",
-    name: "Wooden Storage Chest",
-    collection: "County",
-    category: "Storage",
-    material: "Wood finish available on request",
-    description: "A chest-style storage reference for a project or collection-sourcing brief.",
-    dimensions: "Specifications available on request",
-    image: "/manus-storage/product-trunk_6aad3181.jpg",
-    imageAlt: "Wooden storage chest from Umaid Craftorium collection imagery",
-    imageFocal: { desktop: { x: 50, y: 49 }, mobile: { x: 50, y: 45 }, fit: "contain" },
-  },
-  {
-    id: "carved-cabinet",
-    name: "Carved Cabinet",
-    collection: "Musk",
-    category: "Storage",
-    material: "Wood finish available on request",
-    description: "A carved cabinet reference for a storage or decorative furniture brief.",
-    dimensions: "Specifications available on request",
-    image: "/manus-storage/product-carved-cabinet_18e101e8.jpg",
-    imageAlt: "Carved cabinet from Umaid Craftorium collection imagery",
-    imageFocal: { desktop: { x: 50, y: 49 }, mobile: { x: 50, y: 45 }, fit: "contain" },
-  },
-];
+export const products: Product[] = backupProducts;
+
+/** Compatibility aliases for public links created before the backup catalogue import. */
+export const legacyProductAliases: Record<string, string> = {
+  "carved-storage-cabinet": "cabinet-with-two-drawer",
+  "accent-side-table": "side-table",
+  "patterned-sideboard": "sideboard-with-two-door-and-drawers",
+  "wooden-chest": "storage-box",
+  "carved-cabinet": "iron-fitted-carving-wooden-cabinet",
+};
+
+export function resolveProductId(id: string) {
+  return legacyProductAliases[id] || id;
+}
+
+export function getCanonicalProductPath(id: string) {
+  return `/collections/${resolveProductId(id)}`;
+}
 
 export const productCategories = ["All", "Dining", "Living", "Bedroom", "Bathroom", "Outdoor", "Storage"] as const;
 
 export function getProduct(id: string) {
-  return products.find((product) => product.id === id);
+  return products.find((product) => product.id === resolveProductId(id));
 }
 
 export function getRelatedProducts(product: Product) {
@@ -160,6 +93,6 @@ export function filterProducts(query: string, category: (typeof productCategorie
   return filterCatalogueProducts({ query, category: category === "All" ? undefined : category, collection: collectionSlug }, catalogue);
 }
 
-export function getProductGallery(product: Product, catalogue: Product[] = products) {
-  return [product, ...catalogue.filter((item) => item.id !== product.id).slice(0, 2)].map((item) => ({ src: item.image, alt: item.imageAlt, focal: item.imageFocal }));
+export function getProductGallery(product: Product) {
+  return [{ src: product.image, alt: product.imageAlt, focal: product.imageFocal }];
 }

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildRfqPayload } from "../shared/enquiry";
+import { getProduct } from "../client/src/lib/catalog";
 import { internationalRfqFieldsSchema } from "../shared/rfq";
 
 describe("buildRfqPayload", () => {
@@ -27,6 +28,15 @@ describe("buildRfqPayload", () => {
     expect(internationalRfqFieldsSchema.parse({ destinationCity: "Milan", destinationCountry: "Italy", destinationPort: "Genoa", estimatedOrderQuantity: 24, preferredUnits: "metric", exportRequirements: "Please advise on required export documentation." })).toMatchObject({ destinationCountry: "Italy", estimatedOrderQuantity: 24, preferredUnits: "metric" });
     expect(() => internationalRfqFieldsSchema.parse({ estimatedOrderQuantity: 0 })).toThrow();
     expect(() => internationalRfqFieldsSchema.parse({ preferredUnits: "feet" })).toThrow();
+  });
+
+  it("builds the RFQ review/submission payload for an imported backup product", () => {
+    const product = getProduct("dining-table");
+    expect(product).toBeDefined();
+    const payload = buildRfqPayload({ buyerType: "Retail buyer", projectType: "Hospitality", country: "Italy", message: "Please confirm the available specification set." }, [{ name: product!.name, collection: product!.collection }]);
+    expect(payload.project).toBe("Retail buyer · Hospitality · Italy");
+    expect(payload.message).toContain("Dining Table (Stark)");
+    expect(payload.message).toContain("Please confirm the available specification set.");
   });
 
   it("keeps general enquiries useful when no catalogue product has been selected", () => {

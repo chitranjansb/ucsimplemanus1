@@ -4,7 +4,7 @@ import { breadcrumbStructuredData, productStructuredData, SITE_ORIGIN } from "..
 
 describe("SEO structured-data helpers", () => {
   it("creates product markup without inventing price, availability, dimensions, or ratings", () => {
-    const product = getProduct("carved-storage-cabinet");
+    const product = getProduct("dining-table");
     expect(product).toBeDefined();
     const data = productStructuredData(product!);
     expect(data).toMatchObject({

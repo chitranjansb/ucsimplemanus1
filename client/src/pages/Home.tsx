@@ -1,7 +1,7 @@
 import { Meta, SiteFrame } from "@/components/SiteLayout";
 import { ProductCard } from "@/components/ProductCard";
 import { useEnquiry } from "@/contexts/EnquiryContext";
-import { products } from "@/lib/catalog";
+import { getProduct, products } from "@/lib/catalog";
 import { trackIntent } from "@/lib/analytics";
 import { getImageFocalStyle } from "@/lib/imageFocal";
 import { trpc } from "@/lib/trpc";
@@ -14,9 +14,9 @@ export default function Home() {
   const contentQuery = trpc.content.public.useQuery(undefined, { retry: false });
   const catalogue = featuredQuery.data || products;
   const heroCopy = contentQuery.data?.homepage_hero_copy || "Umaid Craftorium develops, manufactures, and sources furniture and home-interior products for trade buyers, project teams, and global markets.";
-  const featured = catalogue.filter((product) => product.featured);
-  const heroProduct = catalogue.find((product) => product.id === "patterned-sideboard") ?? products.find((product) => product.id === "patterned-sideboard") ?? products[0];
-  const customFeatureProduct = catalogue.find((product) => product.id === "carved-storage-cabinet") ?? products.find((product) => product.id === "carved-storage-cabinet") ?? products[0];
+  const featured = catalogue.filter((product) => product.featured).length ? catalogue.filter((product) => product.featured) : catalogue.slice(0, 6);
+  const heroProduct = catalogue.find((product) => product.id === "sideboard-with-two-door-and-drawers") ?? getProduct("sideboard-with-two-door-and-drawers") ?? products[0];
+  const customFeatureProduct = catalogue.find((product) => product.id === "wooden-bed-with-shelf") ?? getProduct("wooden-bed-with-shelf") ?? products[0];
 
   return <SiteFrame>
     <Meta title="Trade furniture from Jodhpur" description="Umaid Craftorium is a trade-only furniture manufacturer, wholesale supplier, and exporter in Jodhpur, India." />

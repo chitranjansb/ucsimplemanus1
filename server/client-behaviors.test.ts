@@ -14,19 +14,20 @@ import { validateInternationalPhone } from "../client/src/lib/phone";
 
 describe("catalogue and enquiry client helpers", () => {
   it("filters the catalogue by text and category without altering the source collection", () => {
-    expect(filterProducts("cabinet", "All").map((product) => product.id)).toContain("carved-storage-cabinet");
+    expect(filterProducts("cabinet", "All").map((product) => product.id)).toContain("cabinet-with-two-drawer");
     expect(filterProducts("", "Living").every((product) => product.category === "Living")).toBe(true);
-    expect(filterProducts("", "All", products, "mosaic").map((product) => product.id)).toEqual(["carved-storage-cabinet"]);
-    expect(products).toHaveLength(5);
+    expect(filterProducts("", "All", products, "mosaic").length).toBeGreaterThan(0);
+    expect(filterProducts("", "All", products, "mosaic").every((product) => product.collectionSlug === "mosaic")).toBe(true);
+    expect(products).toHaveLength(436);
   });
 
   it("creates a focal-aware gallery headed by the selected product and does not repeat an image", () => {
-    const product = getProduct("carved-storage-cabinet");
+    const product = getProduct("dining-table");
     expect(product).toBeDefined();
     const gallery = getProductGallery(product!);
-    expect(gallery).toHaveLength(3);
+    expect(gallery).toHaveLength(1);
     expect(gallery[0].src).toBe(product!.image);
-    expect(gallery[0].focal?.mobile).toEqual({ x: 50, y: 44 });
+    expect(gallery[0].focal?.mobile).toEqual({ x: 50, y: 50 });
     expect(new Set(gallery.map((image) => image.src)).size).toBe(gallery.length);
   });
 
@@ -101,10 +102,11 @@ describe("catalogue and enquiry client helpers", () => {
   });
 
   it("searches and combines advanced catalogue filters without mutating product data", () => {
-    expect(filterCatalogueProducts({ query: "cabinet" }).map((product) => product.id)).toContain("carved-storage-cabinet");
-    expect(filterCatalogueProducts({ collection: "mosaic" }).map((product) => product.id)).toEqual(["carved-storage-cabinet"]);
+    expect(filterCatalogueProducts({ query: "cabinet" }).map((product) => product.id)).toContain("cabinet-with-two-drawer");
+    expect(filterCatalogueProducts({ collection: "mosaic" }).length).toBeGreaterThan(0);
+    expect(filterCatalogueProducts({ collection: "mosaic" }).every((product) => product.collectionSlug === "mosaic")).toBe(true);
     expect(filterCatalogueProducts({ category: "living" }).every((product) => product.category === "Living")).toBe(true);
-    expect(filterCatalogueProducts({ material: "wood-finish-available-on-request" }).map((product) => product.id)).toContain("carved-storage-cabinet");
+    expect(filterCatalogueProducts({ material: "specifications-available-on-request" })).toHaveLength(products.length);
     expect(filterCatalogueProducts({ featured: true }).every((product) => product.featured)).toBe(true);
     expect(filterCatalogueProducts({ query: "does-not-exist" })).toEqual([]);
     expect(filterCatalogueProducts({ sort: "name_desc" }).map((product) => product.name)).toEqual([...products].sort((a, b) => b.name.localeCompare(a.name)).map((product) => product.name));

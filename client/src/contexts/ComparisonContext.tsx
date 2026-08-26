@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React from "react";
 import { addComparisonProduct, clearComparisonProducts, MAX_COMPARISON_PRODUCTS, normalizeComparisonProducts, removeComparisonProduct } from "@/lib/comparisonSelection";
 import { readComparisonStorage, writeComparisonStorage } from "@/lib/comparisonStorage";
 import type { Product } from "@/lib/catalog";

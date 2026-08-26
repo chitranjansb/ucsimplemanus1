@@ -93,3 +93,15 @@
 - [x] Resolve Vercel build-step TS7016 for the generated `dist/vercel.js` entrypoint without changing runtime behavior.
 - [x] Remove the Vite runtime dependency from the shared Vercel app factory so the production function does not load Rollup optional binaries.
 - [x] Serve the generated Vite SPA from the Vercel Express function as a fallback for `/` and nested public routes.
+- [x] Inspect `index.zip` and inventory its real product data, collection data, and image assets.
+- [x] Map verified backup products and collections into the existing catalogue model without fabricating missing facts.
+- [x] Integrate uploaded image assets using the required web asset workflow and update relevant catalogue/collection pages.
+- [x] Validate responsive image framing, public routes, RFQ flows, type checks, tests, and production build; save a new checkpoint.
+- [x] Fix regression tests and legacy product-route compatibility after replacing placeholder catalogue records with verified backup products.
+- [x] Add controlled legacy product-ID aliases or redirects so previously published placeholder routes remain navigable after the backup import.
+- [x] Add regression coverage for legacy catalogue route resolution and alias behavior.
+- [x] Save a new checkpoint after the backup catalogue and image integration.
+- [x] Add route-level regression coverage for ProductDetail legacy URL canonical navigation.
+- [x] Re-validate the RFQ flow against an imported backup product and record the result.
+- [x] Add component-level ProductDetail redirect coverage for a legacy product URL.
+- [x] Re-validate the RFQ drawer details/review/submission flow with an imported backup product and document the result.

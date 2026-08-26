@@ -339,3 +339,18 @@ h1, h2, h3 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; 
 .compare-remove { display: inline-flex; align-items: center; gap: 5px; justify-self: start; border: 0; background: transparent; padding: 0; color: var(--ink-soft); font: 10px "DM Mono", monospace; letter-spacing: .05em; text-transform: uppercase; }
 .compare-footnote { display: flex; align-items: center; gap: 8px; margin-top: 17px; color: var(--ink-soft); font-size: 11px; }
 @media (max-width: 760px) { .catalogue-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); } .compare-toolbar { align-items: start; flex-direction: column; } .compare-toolbar__actions { align-items: start; } .compare-table th, .compare-table td { padding: 12px; } .compare-product img { height: 130px; } .compare-product a { font-size: 17px; } .header-compare { margin-right: 0; font-size: 0; } .header-compare b { font-size: 10px; } .product-card__actions { justify-content: flex-start; } }
+
+
+/* Backup-backed collection cards */
+.collection-cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+.collection-card { display: flex; min-width: 0; flex-direction: column; border: 1px solid rgba(245,242,234,.18); background: rgba(245,242,234,.04); color: var(--ivory); transition: transform .22s cubic-bezier(.23,1,.32,1), background .22s ease; }
+.collection-card:hover { transform: translateY(-5px); background: rgba(245,242,234,.1); }
+.collection-card__image { aspect-ratio: 1 / 1; overflow: hidden; background: var(--sand); }
+.collection-card__image img { width: 100%; height: 100%; object-fit: contain; object-position: center; background: var(--sand); transition: transform .35s cubic-bezier(.23,1,.32,1), filter .35s ease; }
+.collection-card:hover .collection-card__image img { transform: scale(1.035); filter: saturate(1.05); }
+.collection-card__body { display: grid; grid-template-columns: 29px 1fr; gap: 10px; align-items: start; min-height: 88px; padding: 15px 15px 17px; }
+.collection-card__body > span { color: #dba88a; font: 10px "DM Mono", monospace; }
+.collection-card__body h3 { margin: 0 0 7px; color: var(--ivory); font-size: 24px; line-height: .98; }
+.collection-card__body p { margin: 0; color: #c4bdb0; font: 10px "DM Mono", monospace; letter-spacing: .04em; text-transform: uppercase; }
+@media (max-width: 1020px) { .collection-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .collection-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } .collection-card__body { grid-template-columns: 23px 1fr; min-height: 78px; padding: 12px; } .collection-card__body h3 { font-size: 20px; } .collection-card__body p { font-size: 8px; } }

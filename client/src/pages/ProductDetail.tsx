@@ -1,6 +1,7 @@
+import React from "react";
 import { Meta, SiteFrame } from "@/components/SiteLayout";
 import { ProductCard } from "@/components/ProductCard";
-import { getProduct, getProductGallery, getRelatedProducts } from "@/lib/catalog";
+import { getCanonicalProductPath, getProduct, getProductGallery, getRelatedProducts, resolveProductId, type Product } from "@/lib/catalog";
 import { useEnquiry } from "@/contexts/EnquiryContext";
 import { useComparison } from "@/contexts/ComparisonContext";
 import { trackIntent } from "@/lib/analytics";
@@ -10,9 +11,11 @@ import { breadcrumbStructuredData, productStructuredData } from "@/lib/seo";
 import { trpc } from "@/lib/trpc";
 import { ArrowLeft, ArrowRight, Check, ChevronRight, Download, Plus } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 
 export default function ProductDetail({ id }: { id: string }) {
+  const [, setLocation] = useLocation();
+  const canonicalId = resolveProductId(id);
   const productQuery = trpc.catalogue.bySlug.useQuery({ slug: id }, { retry: false });
   const product = productQuery.data || getProduct(id);
   const { addItem, items, openEnquiry } = useEnquiry();
@@ -20,6 +23,10 @@ export default function ProductDetail({ id }: { id: string }) {
   const [activeImage, setActiveImage] = useState(0);
   const [zoomed, setZoomed] = useState(false);
   const [unit, setUnit] = useState<DisplayUnit>("metric");
+  useEffect(() => {
+    const redirectPath = getProductDetailRedirect(id, product);
+    if (redirectPath) setLocation(redirectPath);
+  }, [id, product, setLocation]);
   useEffect(() => {
     if (product) trackIntent("product_view", { product: product.id, collection: product.collection });
   }, [product]);
@@ -61,6 +68,10 @@ export default function ProductDetail({ id }: { id: string }) {
     {related.length > 0 && <section className="section-space"><div className="shell"><div className="section-heading"><div><p className="eyebrow">Related category</p><h2>Continue<br />the selection.</h2></div><Link href="/collections" className="text-action">All collections <ArrowRight size={15} /></Link></div><div className="product-grid product-grid--three">{related.map((item, index) => <ProductCard key={item.id} product={item} index={index} />)}</div></div></section>}
     {zoomed && <div className="gallery-lightbox" role="dialog" aria-modal="true" aria-label={`${product.name} enlarged image`}><button className="gallery-lightbox__backdrop" type="button" aria-label="Close enlarged image" onClick={() => setZoomed(false)} /><div className="gallery-lightbox__content"><img src={gallery[activeImage].src} alt={gallery[activeImage].alt} style={getImageFocalStyle(gallery[activeImage].focal)} /><button type="button" className="gallery-lightbox__close" onClick={() => setZoomed(false)}>Close</button></div></div>}
   </SiteFrame>;
+}
+
+export function getProductDetailRedirect(id: string, product: Product | undefined) {
+  return product && resolveProductId(id) !== id ? getCanonicalProductPath(id) : null;
 }
 
 function UnknownProduct() {

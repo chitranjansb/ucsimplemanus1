@@ -1,4 +1,5 @@
 import type { Product } from "@/lib/catalog";
+import React from "react";
 import { addEnquiryItem, removeEnquiryItem, updateEnquiryItemQuantity } from "@/lib/enquirySelection";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 

@@ -3,7 +3,7 @@ export type DisplayUnit = "metric" | "imperial";
 export function formatDimensionValue(value: string | null | undefined, unit: DisplayUnit) {
   if (!value || /request/i.test(value)) return "Available on request";
   if (unit === "metric") return value;
-  return value.replace(/(\d+(?:\.\d+)?)\s*cm\b/gi, (_, amount: string) => `${(Number(amount) / 2.54).toFixed(1)} in`).replace(/(\d+(?:\.\d+)?)\s*mm\b/gi, (_, amount: string) => `${(Number(amount) / 25.4).toFixed(1)} in`);
+  return value.replace(/(\d+(?:\.\d+)?)\s*cm(?:s)?\b/gi, (_, amount: string) => `${(Number(amount) / 2.54).toFixed(1)} in`).replace(/(\d+(?:\.\d+)?)\s*mm\b/gi, (_, amount: string) => `${(Number(amount) / 25.4).toFixed(1)} in`);
 }
 
 export function formatWeightValue(value: number | null | undefined, unit: DisplayUnit) {
